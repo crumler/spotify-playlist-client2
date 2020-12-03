@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { DataGrid } from '@material-ui/data-grid';
+import Footer from './Footer';
+import theme from '../../styles/MuiTheme';
+import NewPlaylistTable from '../results/NewPlaylistTable';
 
 const styles = theme => ({
     root: {
@@ -15,7 +20,10 @@ const styles = theme => ({
         },
         control: {
             padding: theme.spacing(2)
-        }
+        },
+        button: {
+            primary: "#1DB954"
+        },
     },
 });
 
@@ -24,29 +32,119 @@ class NewPlaylist extends Component {
         super(props);
         this.state = {
             root: '',
-            spacing: ''
+            spacing: '',
+            artist: '',
+            album: '',
+            song: '',
+            playlistName: '',
+            description: '',
+            playlistOwner: '',
+            playlistNameField: null,
+            playlistNameFieldDisabled: false
         }
-    }
+    };
+
+    handlePlaylistSubmit = (e) => {
+        e.preventDefault();
+        fetch('http://localhost:5040/playlist/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                playlist: {
+                    playlistName: this.state.playlistName,
+                    playlistOwner: this.state.playlistOwner,
+                    description: this.state.description
+                }
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        }).then(
+            (response) => response.json()
+        ).then(() => {
+            !this.state.playlistName ? alert('You must enter a name for your playlist.') : alert('Playlist updated!');
+        })
+    };
+
+    handleSongSubmit = (e) => {
+        e.preventDefault();
+        fetch('http://localhost:5040/playlistsong/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                playlist: {
+                    artist: this.state.artist,
+                    album: this.state.album,
+                    song: this.state.song
+                }
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        }).then(
+            (response) => response.json()
+        )
+    };
+
+    disabledTrue() {
+        this.setState({
+            ...this.state,
+            playlistNameFieldDisabled: true
+        })
+    };
+
+    disabledFalse() {
+        this.setState({
+            ...this.state,
+            playlistNameFieldDisabled: false
+        })
+    };
+
+    // disablePlaylistNameField = () => {
+    //     this.state.playlistName ? this.disabledTrue() : this.disabledFalse
+    // };
 
     render() {
         return (
-            <div style={{ width: '100%', marginTop: '100px' }}>
-                <h1>Create a New Playlist:</h1>
-                <Grid container className={this.props.classes.root} spacing={2}>
-                    <Grid item xs={12}>
-                        <div style={{ width: '100%', marginTop: '100px' }}>
-                            <form className={this.props.classes.root} noValidate autoComplete="off">
-                                <TextField id="outlined-basic" label="Playlist Name" variant="outlined" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} />
-                                <TextField id="outlined-basic" label="Artist / Band" variant="outlined" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} />
-                                <TextField id="outlined-basic" label="Album Name" variant="outlined" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} />
-                                <TextField id="outlined-basic" label="Song Name" variant="outlined" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} />
-                                <br />
-                                <Button variant="contained" color="primary">Add to Playlist</Button>
-                            </form>
-                        </div>
+            <ThemeProvider theme={theme}>
+                <div style={{ width: '100%', marginTop: '100px' }}>
+                    <h1>Create a New Playlist:</h1>
+                    <Grid container direction="column" className={this.props.classes.root} spacing={2} alignContent="center">
+                        <Grid item xs={12}>
+                            <div style={{ width: '100%', marginTop: '.5rem' }}>
+                                <form onSubmit={this.handlePlaylistSubmit} className={this.props.classes.root} noValidate autoComplete="off" style={{ marginBottom: "1rem" }}>
+                                    <TextField size="small" id="outlined-basic standard-size-small" label="Playlist Name" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ playlistName: e.target.value })} value={this.state.playlistName} required
+                                        disabled={this.state.playlistNameFieldDisabled} />
+
+                                    <TextField size="small" id="outlined-basic" label="Playlist Description" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ description: e.target.value })} value={this.state.description} />
+
+                                    <br />
+                                    <Button variant="contained" color="primary" type="submit">Create New Playlist</Button>
+                                </form>
+
+                                <hr style={{ color: "white" }} />
+
+                                <h3 style={{ textDecoration: "underline" }}>Current Playlist:</h3>
+                                <h3>{this.state.playlistName}</h3>
+
+                                <form onSubmit={this.handleSongSubmit} className={this.props.classes.root} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
+                                    <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />
+
+                                    <TextField size="small" id="outlined-basic standard-size-small" label="Album" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ album: e.target.value })} value={this.state.album} />
+
+                                    <TextField size="small" id="outlined-basic standard-size-small" label="Song" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ song: e.target.value })} value={this.state.song} />
+                                    <br />
+                                    <Button variant="contained" color="primary" type="submit">Add Info to Playlist</Button>
+                                </form>
+                            </div>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div>
+                    <br />
+                    <br />
+                    <NewPlaylistTable />
+
+                </div>
+            </ThemeProvider>
         )
     }
 };

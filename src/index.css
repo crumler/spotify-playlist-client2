@@ -19,3 +19,7 @@ code {
   background-color: 'white';
   border-radius: '10px';
 }
+
+#playlistGrid {
+  color: white !important;
+}

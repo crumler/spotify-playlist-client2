@@ -82,11 +82,11 @@ class Navbar extends Component {
                     {/* <Router> */}
                     <AppBar position="fixed">
                         <Toolbar>
-                            <Switch>
+                            {/* <Switch>
                                 <Route exact path="/newplaylist"><NewPlaylist /></Route>
                                 <Route exact path="/editplaylist"><EditPlaylist /></Route>
                                 <Route exact path="/"><Main /></Route>
-                            </Switch>
+                            </Switch> */}
                             <IconButton edge="start" className={this.props.classes.menuButton} color="inherit" aria-label="menu" onClick={this.handleClick}>
                                 <MenuIcon />
                             </IconButton>

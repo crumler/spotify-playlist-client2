@@ -14,9 +14,12 @@ class App extends React.Component {
     super(props)
     this.state = {
       sessionToken: '',
-      open: false
+      open: false,
+      isAuthenticated: false
     }
-    this.handleSessionTokenUpdate.bind(this)
+    this.handleSessionTokenUpdate = this.handleSessionTokenUpdate.bind(this)
+    this.openFalse = this.openFalse.bind(this)
+    this.openTrue = this.openTrue.bind(this)
   }
 
   // var updateToken = (newToken: string) => {
@@ -25,27 +28,33 @@ class App extends React.Component {
   // };
 
   componentWillMount() {
-    let token = localStorage.getItem('token')
-    console.log(token)
-    if (token) {
+    if (localStorage.getItem('token')) {
+      let token = localStorage.getItem('token')
+      console.log(token)
+      if (token) {
 
-      this.setState({
-        sessionToken: token
-      })
+        this.setState({
+          sessionToken: token,
+          isAuthenticated: true
+        })
+      }
     }
+
   };
 
   handleSessionTokenUpdate(newToken) {
     localStorage.setItem('token', newToken)
     this.setState({
-      sessionToken: newToken
+      sessionToken: newToken,
+      isAuthenticated: true
     })
   };
 
   clearToken() {
     localStorage.clear();
     this.setState({
-      sessionToken: ''
+      sessionToken: '',
+      isAuthenticated: false
     })
   };
 
@@ -69,22 +78,22 @@ class App extends React.Component {
     //   sessionToken: ''
     // })
 
-    if (this.state.sessionToken === localStorage.getItem('token')) {
+    if (this.state.isAuthenticated) {
       return (<div className='App'>
 
         <Router>
           <Navbar />
           <Switch>
-            <Route exact path="/newplaylist"><NewPlaylist /></Route>
-            <Route exact path="/editplaylist"><EditPlaylist /></Route>
-            <Route path="/"><Main /></Route>
+            <Route exact path="/newplaylist"><NewPlaylist sessionToken={this.state.sessionToken} /></Route>
+            <Route exact path="/editplaylist"><EditPlaylist sessionToken={this.state.sessionToken} /></Route>
+            <Route path="/"><Main sessionToken={this.state.sessionToken} /></Route>
 
           </Switch>
         </Router>
         <Footer />
       </div>)
     } else {
-      return (<Login updateToken={this.handleSessionTokenUpdate.bind(this)} open={this.state.open} onClose={this.openFalse.bind(this)} onOpen={this.openTrue.bind(this)} />)
+      return (<Login updateToken={this.handleSessionTokenUpdate} open={this.state.open} onClose={this.openFalse} onOpen={this.openTrue} />)
     };
 
     // return (this.state.sessionToken === localStorage.getItem('token') ? <Main classes={this.classes} token={this.state.sessionToken} clickLogout={this.clearToken.bind(this)} />

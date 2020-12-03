@@ -80,7 +80,7 @@ class Login extends React.Component {
             (response) => response.json()
         ).then((data) => {
             this.props.updateToken(data.sessionToken)
-            window.location.reload()
+            // window.location.reload()
         })
     };
 
@@ -112,15 +112,17 @@ class Login extends React.Component {
                                     <TextField label="Username"
                                         margin="normal"
                                         InputProps={{ startAdornment: <InputAdornment position='start'><AccountCircle /></InputAdornment> }}
-                                        style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }}
+                                        style={{ backgroundColor: 'white', color: 'white', borderRadius: '5px' }}
                                         required
+                                        onChange={(e) => this.setState({ username: e.target.value })}
                                     />
                                     <TextField label="Password"
                                         type='password'
                                         margin="normal"
                                         InputProps={{ startAdornment: <InputAdornment position='start'><LockRounded /></InputAdornment> }}
-                                        style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }}
+                                        style={{ backgroundColor: 'white', color: 'white', borderRadius: '5px' }}
                                         required
+                                        onChange={(e) => this.setState({ password: e.target.value })}
                                     />
                                     <br />
                                     <Button color='primary' variant='contained' type='submit' endIcon={<InputIcon />}>Login</Button>

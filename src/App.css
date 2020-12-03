@@ -4,8 +4,16 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.MuiDataGrid-root {
+  color: white
+}
+
 .App {
   text-align: center;
+}
+
+#playlistGrid {
+  color: white !important;
 }
 
 .App-logo {
