@@ -79,7 +79,11 @@ class Login extends React.Component {
         }).then(
             (response) => response.json()
         ).then((data) => {
-            this.props.updateToken(data.sessionToken)
+            if (data.sessionToken) {
+                this.props.updateToken(data.sessionToken)
+            } else {
+                alert('This is not a valid login!');
+            }
             // window.location.reload()
         })
     };

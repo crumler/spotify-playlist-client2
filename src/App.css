@@ -4,6 +4,11 @@
   font-family: 'Roboto', sans-serif;
 }
 
+ol {
+  max-height: 24rem;
+  overflow: auto;
+}
+
 .MuiDataGrid-root {
   color: white
 }
