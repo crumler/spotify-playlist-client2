@@ -30,7 +30,8 @@ const styles = theme => ({
         color: theme.palette.text.secondary,
     },
     media: {
-        height: 400,
+        width: "100%",
+        height: "auto"
     },
     Card: {
         backgroundColor: '#1DB954',
@@ -58,7 +59,7 @@ class Main extends Component {
                     <br />
                     {/* <Router> */}
                     <Grid container spacing={1} justify="center" alignItems="center">
-                        <Grid item xs={3}>
+                        <Grid item xs={6} sm={3}>
                             <Link to="/newplaylist" style={{ textDecoration: 'none' }}>
                                 <Card className={this.props.classes.Card} backgroundColor="primary">
                                     <CardActionArea>
@@ -71,13 +72,13 @@ class Main extends Component {
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                Make a New Playlist
+                                                Create Playlist
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
                                                 Click here to begin building a new playlist.
                                             </Typography>
                                         </CardContent>
-                                        {/* </Link> */}
+
                                     </CardActionArea>
                                     <CardActions>
                                     </CardActions>
@@ -86,7 +87,7 @@ class Main extends Component {
 
 
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={6} sm={3}>
                             <Link to="/editplaylist" style={{ textDecoration: 'none' }}>
                                 <Card className={this.props.classes.Card}>
                                     <CardActionArea>
@@ -99,7 +100,7 @@ class Main extends Component {
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                View / Edit Existing Playlist
+                                                Modify Playlists
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
                                                 Click here to view or edit any of your created playlists.

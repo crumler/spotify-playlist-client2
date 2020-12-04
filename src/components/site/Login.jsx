@@ -8,31 +8,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import InputIcon from '@material-ui/icons/Input';
 import theme from '../../styles/MuiTheme';
 
 import SpotifyIcon from '../../assets/Spotify_Icon_RGB_Green.png';
 import SpotifyLogo from '../../assets/Spotify_Logo_RGB_Green.png';
 
-// const Login = (props: any) => {
-// const classes = useStyles();
-
-// const [firstName, setFirstName] = useState('');
-// const [lastName, setLastName] = useState('');
-// const [username, setUsername] = useState('');
-// const [password, setPassword] = useState('');
-
-// const [open, setOpen] = React.useState(false);
-
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        button: {
-            margin: theme.spacing(1),
-            primary: '#1DB954'
-        },
-    }),
-);
+const styles = theme => ({
+    button: {
+        margin: theme.spacing(1),
+        primary: '#1DB954'
+    }
+});
 
 
 class Login extends React.Component {
@@ -100,11 +88,11 @@ class Login extends React.Component {
         return (
             <ThemeProvider theme={theme}>
                 <div className="Login">
-                    <Grid container style={{ minHeight: '100vh' }}>
+                    <Grid container style={{ minHeight: '100vh', textAlign: "center" }}>
                         <Grid item alignItems='center' xs={12} sm={6} style={{ marginTop: 'auto', marginBottom: 'auto' }}>
                             <img src={SpotifyLogo} style={{ width: '50%', height: '50%' }} alt="Official Spotify Logo" />
                         </Grid>
-                        <Grid container item xs={12} sm={6} alignItems='center' direction='column' justify='space-between' style={{ padding: 10 }}>
+                        <Grid container item xs={12} sm={6} alignItems='center' direction='column' justify='space-between' style={{ textAlign: "center" }}>
                             <div />
                             <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 400, minWidth: 300 }}>
                                 <Grid container justify='center'>
@@ -133,7 +121,7 @@ class Login extends React.Component {
                                 </form>
                                 <br />
 
-                                <Button variant='outlined' color='primary' style={{ color: '#1DB954' }} onClick={this.handleClickOpen}>New User?  Please click here to register.</Button>
+                                <Button variant='outlined' color='primary' style={{ color: '#1DB954', alignContent: "center", alignSelf: "center" }} onClick={this.handleClickOpen}>New User?  Please click here to register.</Button>
                                 <form onSubmit={this.handleRegisterSubmit}>
                                     <Dialog open={this.props.open} onClose={this.handleClose}>
                                         <DialogTitle>Registration:</DialogTitle>
@@ -198,4 +186,4 @@ class Login extends React.Component {
     }
 };
 
-export default Login;
+export default withStyles(styles, { withTheme: true })(Login);
