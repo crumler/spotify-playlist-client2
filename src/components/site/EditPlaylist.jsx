@@ -85,39 +85,39 @@ class EditPlaylistDetails extends Component {
     //     this.setState({ dense: true });
     // };
 
-    fetchExistingPlaylists = () => {
-        console.log('Test string!')
-        fetch('http://localhost:5040/playlist/', {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': this.props.sessionToken
-            })
-        }).then(
-            (response) => console.log(response)
-        ).then((allPlaylistsCreated) => {
-            console.log(allPlaylistsCreated)
-            return this.displayExistingPlaylists(allPlaylistsCreated)
-        })
-    };
-
-    // componentDidMount() {
-    //     let token = this.props.sessionToken
+    // fetchExistingPlaylists = () => {
+    //     console.log('Test string!')
     //     fetch('http://localhost:5040/playlist/', {
     //         method: 'GET',
     //         headers: new Headers({
     //             'Content-Type': 'application/json',
-    //             'Authorization': token
+    //             'Authorization': this.props.sessionToken
     //         })
-    //     }).then((response) => response.json())
-    //         .then((res) => {
-    //             console.log(res);
-    //         })
-    //         .catch((err) => { console.log(err) })
-
-
-    //     console.log('Finished!')
+    //     }).then(
+    //         (response) => console.log(response)
+    //     ).then((allPlaylistsCreated) => {
+    //         console.log(allPlaylistsCreated)
+    //         return this.displayExistingPlaylists(allPlaylistsCreated)
+    //     })
     // };
+
+    componentDidMount() {
+        let token = this.props.sessionToken
+        fetch('http://localhost:5040/playlist/', {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': token
+            })
+        }).then((response) => response.json())
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => { console.log(err) })
+
+
+        console.log('Finished!')
+    };
 
     // componentDidMount() {
     //     fetch('http://localhost:5040/playlist', {
@@ -165,32 +165,35 @@ class EditPlaylistDetails extends Component {
     //     })
     // }
 
-    displayExistingPlaylists(allPlaylistsCreated) {
-        return allPlaylistsCreated.map((allPlaylistsCreated) => {
+    displayExistingPlaylists() {
+        return this.state.allPlaylists.map((allPlaylistsCreated) => {
             console.log(allPlaylistsCreated);
             const { classes } = this.props;
             return (
-                <List dense={this.dense}>
-                    {generate(
-                        <ListItem>
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <FolderIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary="Single-line item"
-                                secondary={this.secondary ? 'Secondary text' : null}
-                            />
-                            <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete">
-                                    <EditIcon />
-                                    <DeleteIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>,
-                    )}
-                </List>
+                // <List dense={this.dense}>
+                //     {generate(
+                //         <ListItem>
+                //             <ListItemAvatar>
+                //                 <Avatar>
+                //                     <FolderIcon />
+                //                 </Avatar>
+                //             </ListItemAvatar>
+                //             <ListItemText
+                //                 primary="Single-line item"
+                //                 secondary={this.secondary ? 'Secondary text' : null}
+                //             />
+                //             <ListItemSecondaryAction>
+                //                 <IconButton edge="end" aria-label="delete">
+                //                     <EditIcon />
+                //                     <DeleteIcon />
+                //                 </IconButton>
+                //             </ListItemSecondaryAction>
+                //         </ListItem>,
+                //     )}
+                // </List>
+                <li>
+                    {allPlaylistsCreated.playlistName}
+                </li>
             )
         })
     }
@@ -226,7 +229,7 @@ class EditPlaylistDetails extends Component {
                     <Grid container direction="column" alignContent="center" spacing={2} className={this.props.classes.root}>
                         <Grid item xs={12} md={6}>
                             <div className={classes.demo}>
-                                {this.fetchExistingPlaylists()}
+                                {/* {this.fetchExistingPlaylists()} */}
 
                                 {/* <List dense={this.dense}>
                                     {generate(
