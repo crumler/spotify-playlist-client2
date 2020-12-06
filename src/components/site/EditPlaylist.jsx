@@ -101,23 +101,21 @@ class EditPlaylistDetails extends Component {
     //     })
     // };
 
-    componentDidMount() {
-        let token = this.props.sessionToken
-        fetch('http://localhost:5040/playlist/', {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': token
-            })
-        }).then((response) => response.json())
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => { console.log(err) })
 
-
-        console.log('Finished!')
-    };
+    // ! UNCOMMENT THIS ONE
+    // componentDidMount() {
+    //     fetch('http://localhost:5040/playlist/', {
+    //         method: 'GET',
+    //         headers: new Headers({
+    //             'Content-Type': 'application/json',
+    //             'Authorization': this.props.sessionToken
+    //         })
+    //     }).then((response) => response.json())
+    //         .then((res) => {
+    //             console.log(res);
+    //         }).then((fetchedPlaylists => this.setState({ allPlaylists: fetchedPlaylists })))
+    //         .catch((err) => { console.log(err) })
+    // };
 
     // componentDidMount() {
     //     fetch('http://localhost:5040/playlist', {
@@ -157,15 +155,8 @@ class EditPlaylistDetails extends Component {
         });
     };
 
-    // displayAllPlaylists() {
-    //     return this.state.allPlaylists.map((playlistData) => {
-    //         return (
-
-    //         )
-    //     })
-    // }
-
     displayExistingPlaylists() {
+        console.log(this.state.allPlaylists)
         return this.state.allPlaylists.map((allPlaylistsCreated) => {
             console.log(allPlaylistsCreated);
             const { classes } = this.props;
@@ -201,7 +192,6 @@ class EditPlaylistDetails extends Component {
 
     displayLivePlaylistData() {
 
-
         return this.state.playlistData.map((musicData) => {
             console.log(musicData);
             return (
@@ -225,6 +215,8 @@ class EditPlaylistDetails extends Component {
                 <div style={{ width: '100%', marginTop: '100px' }}>
 
                     <h1>View / Edit Your Created Playlists:</h1>
+
+                    {this.displayExistingPlaylists()}
 
                     <Grid container direction="column" alignContent="center" spacing={2} className={this.props.classes.root}>
                         <Grid item xs={12} md={6}>
