@@ -6,9 +6,9 @@ switch (window.location.hosename) {
         APIURL = 'http://localhost:5040';
         break;
 
-    case 'cgr-spotify-playlist-server.herokuapp.com':
+    case 'cgr-spotify-playlist-client.herokuapp.com':
 
-        APIURL = 'https://cgr-spotify-playlist-server.herokuapp.com'
+        APIURL = 'https://cgr-spotify-playlist-client.herokuapp.com'
 }
 
 export default APIURL;

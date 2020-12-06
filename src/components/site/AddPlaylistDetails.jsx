@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import APIURL from '../../helpers/environment';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -26,7 +27,8 @@ class AddPlaylistDetails extends Component {
         e.preventDefault();
         console.log(this.state);
         console.log(this.props.playlistIdProp);
-        fetch('http://localhost:5040/playlistsong/create', {
+        fetch(`${APIURL}/playlistsong/create`, {
+            // fetch('http://localhost:5040/playlistsong/create', {
             method: 'POST',
             body: JSON.stringify({
                 playlistsong: {
