@@ -21,8 +21,13 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import FolderIcon from '@material-ui/icons/Folder';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
     root: {
@@ -38,17 +43,19 @@ const styles = theme => ({
         button: {
             primary: "#1DB954"
         },
-        demo: {
-            backgroundColor: theme.palette.background.paper
+        listAllPlaylists: {
+            backgroundColor: theme.palette.background.paper,
+            overflow: "auto",
+            maxHeight: "10"
         },
         title: {
             margin: theme.spacing(4, 0, 2)
         }
-    },
+    }
 });
 
 function generate(element) {
-    return [0, 1, 2].map((value) =>
+    return [0].map((value) =>
         React.cloneElement(element, {
             key: value
         }),
@@ -77,9 +84,9 @@ class EditPlaylistDetails extends Component {
         }
     };
 
-    // handleSecondary = () => {
-    //     this.setState({ secondary: true });
-    // };
+    handleSecondary = () => {
+        this.setState({ secondary: true });
+    };
 
     // handleDense = () => {
     //     this.setState({ dense: true });
@@ -101,33 +108,25 @@ class EditPlaylistDetails extends Component {
     //     })
     // };
 
-
-    // ! UNCOMMENT THIS ONE
-    // componentDidMount() {
-    //     fetch('http://localhost:5040/playlist/', {
-    //         method: 'GET',
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json',
-    //             'Authorization': this.props.sessionToken
-    //         })
-    //     }).then((response) => response.json())
-    //         .then((res) => {
-    //             console.log(res);
-    //         }).then((fetchedPlaylists => this.setState({ allPlaylists: fetchedPlaylists })))
-    //         .catch((err) => { console.log(err) })
-    // };
-
-    // componentDidMount() {
-    //     fetch('http://localhost:5040/playlist', {
-    //         method: 'GET',
-    //         headers: new Headers({ 'Content-Type': 'application/json' })
-    //     })
-    //         .then((response) => response.json())
-    //         .then((journeys) => this.setState({ allJourneys: journeys }))
-    //         .catch(err => console.log(err))
-
-    // };
-
+    componentDidMount() {
+        fetch('http://localhost:5040/playlist/', {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        }).then((response) => response.json())
+            .then((res) => {
+                console.log(res);
+                return res;
+            }).then((res) => {
+                this.setState({
+                    allPlaylists: res
+                },
+                    () => console.log(this.state.allPlaylists));
+            })
+            .catch((err) => { console.log(err) })
+    };
 
     handleSongUpdating = () => {
         fetch('http://localhost:5040/playlistsong/update/:id', {
@@ -147,10 +146,46 @@ class EditPlaylistDetails extends Component {
         }).then(
             (response) => response.json()
             //below is the code for mapping live playlist details
-        ).then((playlistData) => {
+        ).then((playlistDataResponse) => {
             this.setState({
-                playlistData: playlistData,
+                playlistData: playlistDataResponse,
                 playlistData: [...this.state.playlistData, { artist: this.state.artist, album: this.state.album, song: this.state.song }]
+            });
+        });
+    };
+
+    handlePlaylistDelete = () => {
+        fetch("http://localhost:5040/playlist/delete/", {
+            method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        })
+            .then(res => res.json())
+            .catch(err => console.log(err))
+    };
+
+    handlePlaylistEdit = () => {
+        fetch("http://localhost:5040/playlist/update/", {
+            method: 'PUT',
+            body: JSON.stringify({
+                playlist: {
+                    playlistId: this.props.playlistIdProp,
+                    playlistName: this.state.playlistName,
+                    description: this.state.description
+                }
+            }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        }).then(
+            (response) => response.json()
+        ).then((allPlaylistsResponse) => {
+            this.setState({
+                allPlaylists: allPlaylistsResponse,
+                allPlaylists: [...this.state.allPlaylists, { playlistName: this.state.playlistName, description: this.state.description }]
             });
         });
     };
@@ -158,33 +193,37 @@ class EditPlaylistDetails extends Component {
     displayExistingPlaylists() {
         console.log(this.state.allPlaylists)
         return this.state.allPlaylists.map((allPlaylistsCreated) => {
-            console.log(allPlaylistsCreated);
             const { classes } = this.props;
             return (
-                // <List dense={this.dense}>
-                //     {generate(
-                //         <ListItem>
-                //             <ListItemAvatar>
-                //                 <Avatar>
-                //                     <FolderIcon />
-                //                 </Avatar>
-                //             </ListItemAvatar>
-                //             <ListItemText
-                //                 primary="Single-line item"
-                //                 secondary={this.secondary ? 'Secondary text' : null}
-                //             />
-                //             <ListItemSecondaryAction>
-                //                 <IconButton edge="end" aria-label="delete">
-                //                     <EditIcon />
-                //                     <DeleteIcon />
-                //                 </IconButton>
-                //             </ListItemSecondaryAction>
-                //         </ListItem>,
-                //     )}
-                // </List>
-                <li>
-                    {allPlaylistsCreated.playlistName}
-                </li>
+                <Grid item xs={12} md={6} style={{ maxHeight: '100px', overflow: 'auto', textAlign: "center" }}>
+                    <div className={classes.listAllPlaylists}>
+                        <List>
+                            {generate(
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <QueueMusicIcon style={{ color: "#191414" }} />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={allPlaylistsCreated.playlistName}
+                                        secondary={allPlaylistsCreated.description}
+                                        style={{ color: "white" }}
+                                    />
+                                    <ListItemSecondaryAction>
+                                        <IconButton edge="start" aria-label="edit">
+                                            <EditIcon style={{ color: "#1DB954" }} />
+                                        </IconButton>
+                                        <IconButton edge="end" aria-label="delete">
+                                            <DeleteIcon style={{ color: "red" }} />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>,
+                            )}
+                        </List>
+                    </div>
+                </Grid>
+
             )
         })
     }
@@ -212,12 +251,12 @@ class EditPlaylistDetails extends Component {
         const { classes } = this.props;
         return (
             <ThemeProvider theme={theme}>
-                <div style={{ width: '100%', marginTop: '100px' }}>
+                <div style={{ width: '100%', marginTop: '80px' }}>
 
                     <h1>View / Edit Your Created Playlists:</h1>
-
-                    {this.displayExistingPlaylists()}
-
+                    <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
+                        {this.displayExistingPlaylists()}
+                    </div>
                     <Grid container direction="column" alignContent="center" spacing={2} className={this.props.classes.root}>
                         <Grid item xs={12} md={6}>
                             <div className={classes.demo}>
@@ -246,7 +285,7 @@ class EditPlaylistDetails extends Component {
                             </div>
                         </Grid>
 
-                        <br />
+
 
                         <form onSubmit={this.handleSongUpdating()} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
                             <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />

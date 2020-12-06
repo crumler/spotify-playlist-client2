@@ -49,8 +49,8 @@ class NewPlaylist extends Component {
 
     handlePlaylistSubmit = (e) => {
         e.preventDefault();
-        // fetch('http://localhost:5040/playlist/create', {
-        fetch(`${APIURL}/playlist/create`, {
+        fetch('http://localhost:5040/playlist/create', {
+            // fetch(`${APIURL}/playlist/create`, {
             method: 'POST',
             body: JSON.stringify({
                 playlist: {
