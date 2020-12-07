@@ -4,6 +4,14 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.animate__animated.animate__zoomIn {
+  --animate-duration: 1s;
+}
+
+.animate__animated.animate__backInUp {
+  --animate-duration: 1s;
+}
+
 ol {
   max-height: 24rem;
   overflow: auto;

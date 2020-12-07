@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'animate.css';
 import APIURL from '../../helpers/environment';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -95,7 +96,7 @@ class NewPlaylist extends Component {
     render() {
         return (
             <ThemeProvider theme={theme}>
-                <div style={{ width: '100%', marginTop: '100px' }}>
+                <div className="animate__animated animate__zoomIn" style={{ width: '100%', marginTop: '100px' }}>
                     <h1>Create a New Playlist:</h1>
                     <Grid container direction="column" className={this.props.classes.root} spacing={2} alignContent="center">
                         <Grid item xs={12}>

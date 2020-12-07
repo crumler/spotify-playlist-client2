@@ -82,6 +82,12 @@ class EditPlaylistDetails extends Component {
             dense: false,
             secondary: false
         }
+        // this.displayExistingPlaylists = this.displayExistingPlaylists.bind(this);
+        // this.displayLivePlaylistData = this.displayLivePlaylistData.bind(this);
+        this.editModal = this.editModal.bind(this)
+        this.handlePlaylistDelete = this.handlePlaylistDelete.bind(this)
+        this.handlePlaylistEdit = this.handlePlaylistEdit.bind(this)
+
     };
 
     handleSecondary = () => {
@@ -121,42 +127,26 @@ class EditPlaylistDetails extends Component {
                 return res;
             }).then((res) => {
                 this.setState({
-                    allPlaylists: res
-                },
-                    () => console.log(this.state.allPlaylists));
+                    allPlaylists: res,
+                    playlistData: res
+                })
+
             })
             .catch((err) => { console.log(err) })
     };
 
-    handleSongUpdating = () => {
-        fetch('http://localhost:5040/playlistsong/update/:id', {
-            method: 'PUT',
+
+    handlePlaylistDelete(playlistDeleteId, userId) {
+        console.log(playlistDeleteId)
+        fetch(`http://localhost:5040/playlist/delete/${playlistDeleteId}`, {
+            method: 'DELETE',
             body: JSON.stringify({
-                playlistsong: {
+                playlist: {
                     playlistId: this.props.playlistIdProp,
-                    artist: this.state.artist,
-                    album: this.state.album,
-                    song: this.state.song
+                    playlistName: this.state.playlistName,
+                    description: this.state.description
                 }
             }),
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': this.props.sessionToken
-            })
-        }).then(
-            (response) => response.json()
-            //below is the code for mapping live playlist details
-        ).then((playlistDataResponse) => {
-            this.setState({
-                playlistData: playlistDataResponse,
-                playlistData: [...this.state.playlistData, { artist: this.state.artist, album: this.state.album, song: this.state.song }]
-            });
-        });
-    };
-
-    handlePlaylistDelete = () => {
-        fetch("http://localhost:5040/playlist/delete/", {
-            method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.props.sessionToken
@@ -166,8 +156,9 @@ class EditPlaylistDetails extends Component {
             .catch(err => console.log(err))
     };
 
-    handlePlaylistEdit = () => {
-        fetch("http://localhost:5040/playlist/update/", {
+    handlePlaylistEdit(playlistUpdateId) {
+        console.log(playlistUpdateId)
+        fetch(`http://localhost:5040/playlist/update/${playlistUpdateId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 playlist: {
@@ -183,69 +174,58 @@ class EditPlaylistDetails extends Component {
         }).then(
             (response) => response.json()
         ).then((allPlaylistsResponse) => {
-            this.setState({
-                allPlaylists: allPlaylistsResponse,
-                allPlaylists: [...this.state.allPlaylists, { playlistName: this.state.playlistName, description: this.state.description }]
-            });
+            console.log(allPlaylistsResponse)
         });
     };
 
-    displayExistingPlaylists() {
-        console.log(this.state.allPlaylists)
-        return this.state.allPlaylists.map((allPlaylistsCreated) => {
-            const { classes } = this.props;
-            return (
-                <Grid item xs={12} md={6} style={{ maxHeight: '100px', overflow: 'auto', textAlign: "center" }}>
-                    <div className={classes.listAllPlaylists}>
-                        <List>
-                            {generate(
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <QueueMusicIcon style={{ color: "#191414" }} />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={allPlaylistsCreated.playlistName}
-                                        secondary={allPlaylistsCreated.description}
-                                        style={{ color: "white" }}
-                                    />
-                                    <ListItemSecondaryAction>
-                                        <IconButton edge="start" aria-label="edit">
-                                            <EditIcon style={{ color: "#1DB954" }} />
-                                        </IconButton>
-                                        <IconButton edge="end" aria-label="delete">
-                                            <DeleteIcon style={{ color: "red" }} />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>,
-                            )}
-                        </List>
-                    </div>
-                </Grid>
 
-            )
-        })
+
+    editModal(playlistId) {
+        return (
+            <div>
+                <form onSubmit={() => this.handlePlaylistEdit(playlistId)} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
+                    <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />
+
+                    <TextField size="small" id="outlined-basic standard-size-small" label="Album" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ album: e.target.value })} value={this.state.album} />
+
+                    <TextField size="small" id="outlined-basic standard-size-small" label="Song" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ song: e.target.value })} value={this.state.song} />
+                    <br />
+                    <Button variant="contained" color="primary" type="submit">Add Info to Playlist</Button>
+                </form>
+            </div>
+        )
     }
 
 
-    displayLivePlaylistData() {
+    // displayExistingPlaylists() {
+    //     console.log(this.state.allPlaylists)
+    //     // setTimeout(() => {
 
-        return this.state.playlistData.map((musicData) => {
-            console.log(musicData);
-            return (
 
-                <li key={musicData.artist}>
-                    Artist: {musicData.artist}
-                    <br />
-                    Album: {musicData.album}
-                    <br />
-                    Song: {musicData.song}
-                </li>
+    //     // }, 3000)
 
-            )
-        })
-    };
+    // }
+
+
+    // displayLivePlaylistData() {
+
+    //     this.state.playlistData.map((musicData, index) => {
+    //         console.log(musicData);
+    //         return (
+
+    //             <li key={index}>
+    //                 Artist: {musicData.artist}
+    //                 <br />
+    //                 Album: {musicData.album}
+    //                 <br />
+    //                 Song: {musicData.song}
+    //             </li>
+
+    //         )
+    //     })
+    // };
+
+
 
     render() {
         const { classes } = this.props;
@@ -254,12 +234,49 @@ class EditPlaylistDetails extends Component {
                 <div style={{ width: '100%', marginTop: '80px' }}>
 
                     <h1>View / Edit Your Created Playlists:</h1>
-                    <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
+                    {/* <div >
                         {this.displayExistingPlaylists()}
-                    </div>
+                    </div> */}
                     <Grid container direction="column" alignContent="center" spacing={2} className={this.props.classes.root}>
                         <Grid item xs={12} md={6}>
-                            <div className={classes.demo}>
+                            <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
+                                {this.state.allPlaylists.map((allPlaylistsCreated, index) => {
+                                    console.log(this.state.allPlaylists)
+                                    console.log(allPlaylistsCreated)
+                                    const { classes } = this.props;
+                                    return (
+                                        <Grid key={index} item xs={12} md={6} style={{ maxHeight: '100px', overflow: 'auto', textAlign: "center" }}>
+                                            <div className={classes.listAllPlaylists}>
+                                                <List>
+                                                    {generate(
+                                                        <ListItem>
+                                                            <ListItemAvatar>
+                                                                <Avatar>
+                                                                    <QueueMusicIcon key={index} style={{ color: "#191414" }} />
+                                                                </Avatar>
+                                                            </ListItemAvatar>
+                                                            <ListItemText
+                                                                key={index}
+                                                                primary={allPlaylistsCreated.playlistName}
+                                                                secondary={allPlaylistsCreated.description}
+                                                                style={{ color: "white" }}
+                                                            />
+                                                            <ListItemSecondaryAction>
+                                                                <IconButton edge="start" aria-label="edit">
+                                                                    <EditIcon key={index} style={{ color: "#1DB954" }} onClick={() => this.editModal(allPlaylistsCreated.id)} />
+                                                                </IconButton>
+                                                                <IconButton edge="end" aria-label="delete">
+                                                                    <DeleteIcon key={index} style={{ color: "red" }} onClick={() => this.handlePlaylistDelete(allPlaylistsCreated.id, allPlaylistsCreated.userId)} />
+                                                                </IconButton>
+                                                            </ListItemSecondaryAction>
+                                                        </ListItem>
+                                                    )}
+                                                </List>
+                                            </div>
+                                        </Grid>
+
+                                    )
+                                })}
                                 {/* {this.fetchExistingPlaylists()} */}
 
                                 {/* <List dense={this.dense}>
@@ -287,19 +304,11 @@ class EditPlaylistDetails extends Component {
 
 
 
-                        <form onSubmit={this.handleSongUpdating()} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
-                            <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />
 
-                            <TextField size="small" id="outlined-basic standard-size-small" label="Album" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ album: e.target.value })} value={this.state.album} />
-
-                            <TextField size="small" id="outlined-basic standard-size-small" label="Song" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ song: e.target.value })} value={this.state.song} />
-                            <br />
-                            <Button variant="contained" color="primary" type="submit">Add Info to Playlist</Button>
-                        </form>
                         <br />
-                        <ol>
+                        {/* <ol>
                             {this.displayLivePlaylistData()}
-                        </ol>
+                        </ol> */}
                     </Grid>
 
 

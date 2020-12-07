@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'animate.css';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 // import Link from '@material-ui/core/Link'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -58,7 +59,7 @@ class Main extends Component {
                     <Navbar />
                     <br />
                     {/* <Router> */}
-                    <Grid container spacing={1} justify="center" alignItems="center">
+                    <Grid container spacing={1} justify="center" alignItems="center" className="animate__animated animate__zoomIn">
                         <Grid item xs={6} sm={3}>
                             <Link to="/newplaylist" style={{ textDecoration: 'none' }}>
                                 <Card className={this.props.classes.Card} backgroundColor="primary">
