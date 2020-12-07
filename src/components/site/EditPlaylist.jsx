@@ -34,7 +34,7 @@ const styles = theme => ({
         flexGrow: 1,
         '& > *': {
             margin: theme.spacing(1),
-            width: '25ch',
+            width: '100ch',
             maxWidth: 752
         },
         control: {
@@ -79,7 +79,7 @@ class EditPlaylistDetails extends Component {
             description: '',
             playlistData: [],
             allPlaylists: [],
-            dense: false,
+            open: false,
             secondary: false
         }
         // this.displayExistingPlaylists = this.displayExistingPlaylists.bind(this);
@@ -87,6 +87,8 @@ class EditPlaylistDetails extends Component {
         this.editModal = this.editModal.bind(this)
         this.handlePlaylistDelete = this.handlePlaylistDelete.bind(this)
         this.handlePlaylistEdit = this.handlePlaylistEdit.bind(this)
+        this.handleClickOpen = this.handleClickOpen.bind(this)
+        this.handleClose = this.handleClose.bind(this)
 
     };
 
@@ -96,22 +98,6 @@ class EditPlaylistDetails extends Component {
 
     // handleDense = () => {
     //     this.setState({ dense: true });
-    // };
-
-    // fetchExistingPlaylists = () => {
-    //     console.log('Test string!')
-    //     fetch('http://localhost:5040/playlist/', {
-    //         method: 'GET',
-    //         headers: new Headers({
-    //             'Content-Type': 'application/json',
-    //             'Authorization': this.props.sessionToken
-    //         })
-    //     }).then(
-    //         (response) => console.log(response)
-    //     ).then((allPlaylistsCreated) => {
-    //         console.log(allPlaylistsCreated)
-    //         return this.displayExistingPlaylists(allPlaylistsCreated)
-    //     })
     // };
 
     componentDidMount() {
@@ -157,7 +143,8 @@ class EditPlaylistDetails extends Component {
     };
 
     handlePlaylistEdit(playlistUpdateId) {
-        console.log(playlistUpdateId)
+        playlistUpdateId.preventDefault();
+
         fetch(`http://localhost:5040/playlist/update/${playlistUpdateId}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -174,11 +161,9 @@ class EditPlaylistDetails extends Component {
         }).then(
             (response) => response.json()
         ).then((allPlaylistsResponse) => {
-            console.log(allPlaylistsResponse)
+            console.log(this.state.open)
         });
     };
-
-
 
     editModal(playlistId) {
         return (
@@ -194,7 +179,19 @@ class EditPlaylistDetails extends Component {
                 </form>
             </div>
         )
-    }
+    };
+
+    handleClickOpen() {
+        this.setState = ({
+            open: true
+        })
+    };
+
+    handleClose() {
+        this.setState = ({
+            open: false
+        })
+    };
 
 
     // displayExistingPlaylists() {
@@ -230,6 +227,7 @@ class EditPlaylistDetails extends Component {
     render() {
         const { classes } = this.props;
         return (
+
             <ThemeProvider theme={theme}>
                 <div style={{ width: '100%', marginTop: '80px' }}>
 
@@ -263,7 +261,7 @@ class EditPlaylistDetails extends Component {
                                                             />
                                                             <ListItemSecondaryAction>
                                                                 <IconButton edge="start" aria-label="edit">
-                                                                    <EditIcon key={index} style={{ color: "#1DB954" }} onClick={() => this.editModal(allPlaylistsCreated.id)} />
+                                                                    <EditIcon key={index} style={{ color: "#1DB954" }} onClick={() => this.handleClickOpen(allPlaylistsCreated.id)} />
                                                                 </IconButton>
                                                                 <IconButton edge="end" aria-label="delete">
                                                                     <DeleteIcon key={index} style={{ color: "red" }} onClick={() => this.handlePlaylistDelete(allPlaylistsCreated.id, allPlaylistsCreated.userId)} />
@@ -277,43 +275,49 @@ class EditPlaylistDetails extends Component {
 
                                     )
                                 })}
-                                {/* {this.fetchExistingPlaylists()} */}
 
-                                {/* <List dense={this.dense}>
-                                    {generate(
-                                        <ListItem>
-                                            <ListItemAvatar>
-                                                <Avatar>
-                                                    <FolderIcon />
-                                                </Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Single-line item"
-                                                secondary={this.secondary ? 'Secondary text' : null}
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>,
-                                    )}
-                                </List> */}
                             </div>
                         </Grid>
 
-
-
-
-                        <br />
-                        {/* <ol>
-                            {this.displayLivePlaylistData()}
-                        </ol> */}
                     </Grid>
-
-
+                    <form onSubmit={this.handlePlaylistEdit}>
+                        <Dialog open={this.state.open === true} onClose={this.handleClose}>
+                            <DialogTitle>Update Playlist Details:</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    You may update your playlist information below:
+                                </DialogContentText>
+                                <TextField
+                                    margin='dense'
+                                    id='playlistName'
+                                    label='Playlist Name:'
+                                    fullWidth
+                                    onChange={(e) => this.setState({ playlistName: e.target.value })}
+                                    value={this.state.playlistName}
+                                    required
+                                />
+                                <br />
+                                <TextField
+                                    margin='dense'
+                                    id='description'
+                                    label='Description:'
+                                    fullWidth
+                                    onChange={(e) => this.setState({ description: e.target.value })}
+                                    value={this.state.description}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleClose} color='primary'>
+                                    Cancel
+                                    </Button>
+                                <Button onClick={this.handlePlaylistEdit} color='primary'>
+                                    Update Playlist
+                                    </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </form>
                 </div>
-            </ThemeProvider>
+            </ThemeProvider >
         )
     }
 }
