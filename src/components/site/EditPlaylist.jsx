@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'animate.css';
+import APIURL from '../../helpers/environment';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -85,7 +86,8 @@ class EditPlaylistDetails extends Component {
     };
 
     componentDidMount() {
-        fetch('http://localhost:5040/playlist/', {
+        fetch(`${APIURL}/playlist/`, {
+            // fetch('http://localhost:5040/playlist/', {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -106,8 +108,8 @@ class EditPlaylistDetails extends Component {
     };
 
     handlePlaylistDelete(playlistDeleteId, userId) {
-        console.log(playlistDeleteId)
-        fetch(`http://localhost:5040/playlist/delete/${playlistDeleteId}`, {
+        fetch(`${APIURL}/playlist/delete/${playlistDeleteId}`, {
+            // fetch(`http://localhost:5040/playlist/delete/${playlistDeleteId}`, {
             method: 'DELETE',
             body: JSON.stringify({
                 playlist: {
@@ -127,8 +129,8 @@ class EditPlaylistDetails extends Component {
     };
 
     handlePlaylistEdit() {
-
-        fetch(`http://localhost:5040/playlist/update/${this.state.playlistId}`, {
+        fetch(`${APIURL}/playlist/update/${this.state.playlistId}`, {
+            // fetch(`http://localhost:5040/playlist/update/${this.state.playlistId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 playlist: {

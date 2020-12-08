@@ -28,8 +28,8 @@ class AddPlaylistDetails extends Component {
         e.preventDefault();
         console.log(this.state);
         console.log(this.props.playlistIdProp);
-        // fetch(`${APIURL}/playlistsong/create`, {
-        fetch('http://localhost:5040/playlistsong/create', {
+        fetch(`${APIURL}/playlistsong/create`, {
+            // fetch('http://localhost:5040/playlistsong/create', {
             method: 'POST',
             body: JSON.stringify({
                 playlistsong: {
