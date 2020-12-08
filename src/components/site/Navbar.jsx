@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -10,13 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import theme from '../../styles/MuiTheme';
 import { ThemeProvider } from '@material-ui/core';
-import Main from './Main';
-import NewPlaylist from './NewPlaylist';
-import EditPlaylist from './EditPlaylist';
-import Routes from './Routes';
+
 
 const styles = {
     root: {
@@ -39,15 +35,6 @@ const logout = () => {
     window.location.href = '/';
 };
 
-// const Navbar = () => {
-//     const classes = useStyles();
-
-// const [anchorEl, setAnchorEl] = React.useState(null);
-//   const open = Boolean(anchorEl);
-
-// const handleClose = () => {
-//     setAnchorEl(null);
-//   };
 
 class Navbar extends Component {
     constructor(props) {
@@ -82,11 +69,6 @@ class Navbar extends Component {
                     {/* <Router> */}
                     <AppBar position="fixed">
                         <Toolbar>
-                            {/* <Switch>
-                                <Route exact path="/newplaylist"><NewPlaylist /></Route>
-                                <Route exact path="/editplaylist"><EditPlaylist /></Route>
-                                <Route exact path="/"><Main /></Route>
-                            </Switch> */}
                             <IconButton edge="start" className={this.props.classes.menuButton} color="inherit" aria-label="menu" onClick={this.handleClick}>
                                 <MenuIcon />
                             </IconButton>
@@ -120,7 +102,7 @@ class Navbar extends Component {
                                 </MenuItem>
 
                                 <Link to="/editplaylist" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <MenuItem onClick={this.handleClose}>View / Edit Playlist</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Modify Playlists</MenuItem>
                                 </Link>
 
 
@@ -132,16 +114,10 @@ class Navbar extends Component {
                             <Button className={this.props.classes.Button} color="secondary" backgroundColor="secondary" variant="contained" onClick={logout}>Logout</Button>
                         </Toolbar>
                     </AppBar>
-                    {/* <Routes /> */}
-                    {/* </Router> */}
                 </div>
             </ThemeProvider>
         )
     }
-};
-
-Navbar.propTypes = {
-    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Navbar);

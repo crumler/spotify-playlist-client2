@@ -8,10 +8,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { createStyles, makeStyles, Theme, createMuiTheme, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import InputIcon from '@material-ui/icons/Input';
 import theme from '../../styles/MuiTheme';
-
 import SpotifyIcon from '../../assets/Spotify_Icon_RGB_Green.png';
 import SpotifyLogo from '../../assets/Spotify_Logo_RGB_Green.png';
 
@@ -31,6 +30,7 @@ class Login extends React.Component {
             lastName: '',
             username: '',
             password: '',
+            favoriteArtist: '',
             open: false
         }
         this.props.updateToken.bind(this)
@@ -42,7 +42,7 @@ class Login extends React.Component {
         // fetch(`${APIURL}/user/register`, {
         fetch('http://localhost:5040/user/register', {
             method: 'POST',
-            body: JSON.stringify({ user: { firstName: this.state.firstName, lastName: this.state.lastName, username: this.state.username, password: this.state.password } }),
+            body: JSON.stringify({ user: { firstName: this.state.firstName, lastName: this.state.lastName, username: this.state.username, password: this.state.password, favoriteArtist: this.state.favoriteArtist } }),
             headers: new Headers({
                 'Content-Type': 'application/json'
             })
@@ -72,7 +72,6 @@ class Login extends React.Component {
             } else {
                 alert('This is not a valid login!');
             }
-            // window.location.reload()
         })
     };
 
@@ -143,6 +142,15 @@ class Login extends React.Component {
                                                 fullWidth
                                                 onChange={(e) => this.setState({ lastName: e.target.value })}
                                                 value={this.state.lastName}
+                                            />
+                                            <br />
+                                            <TextField
+                                                margin='dense'
+                                                id='favoriteartist'
+                                                label='Favorite Artist:'
+                                                fullWidth
+                                                onChange={(e) => this.setState({ favoriteArtist: e.target.value })}
+                                                value={this.state.favoriteArtist}
                                             />
                                             <br />
                                             <TextField

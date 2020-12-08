@@ -4,14 +4,9 @@ import APIURL from '../../helpers/environment';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
-import Footer from './Footer';
+import { withStyles } from '@material-ui/core/styles';
 import theme from '../../styles/MuiTheme';
-import NewPlaylistTable from '../results/NewPlaylistTable';
 import AddPlaylistDetails from './AddPlaylistDetails';
 
 const styles = theme => ({
@@ -89,10 +84,6 @@ class NewPlaylist extends Component {
         })
     };
 
-    // disablePlaylistNameField = () => {
-    //     this.state.playlistName ? this.disabledTrue() : this.disabledFalse
-    // };
-
     render() {
         return (
             <ThemeProvider theme={theme}>
@@ -122,7 +113,6 @@ class NewPlaylist extends Component {
                     </Grid>
                     <br />
                     <br />
-
                 </div>
             </ThemeProvider>
         )

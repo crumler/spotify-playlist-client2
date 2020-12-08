@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'animate.css';
 import APIURL from '../../helpers/environment';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -60,7 +61,7 @@ class AddPlaylistDetails extends Component {
             console.log(song);
             return (
 
-                <li key={song.artist}>
+                <li className="animate__animated animate__zoomIn" key={song.artist}>
                     Artist: {song.artist}
                     <br />
                     Album: {song.album}
@@ -79,7 +80,7 @@ class AddPlaylistDetails extends Component {
     render() {
 
         return (
-            <div>
+            <div className="animate__animated animate__zoomIn">
                 <form onSubmit={this.handleSongSubmit} className={this.props.classes.root} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
                     <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />
 

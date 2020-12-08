@@ -2,31 +2,16 @@ import React from 'react';
 import { Grid, TextField, Button, InputAdornment } from '@material-ui/core';
 import { AccountCircle, LockRounded } from '@material-ui/icons';
 
-// const Register = () => {
-
-// const [username, setUsername] = useState('');
-// const [password, setPassword] = useState('');
 
 class Register extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            favoriteArtist: ''
         }
     }
-
-    // handleUsernameChange = () => {
-    //     this.setState({
-    //         username: this.state.username
-    //     })
-    // };
-
-    // handlePasswordChange = () => {
-    //     this.setState({
-    //         password: this.state.password
-    //     })
-    // };
 
     render() {
         return (
@@ -52,7 +37,6 @@ class Register extends React.Component {
                     </Grid>
                 </Grid>
             </div>
-
         )
     }
 };

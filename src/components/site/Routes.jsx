@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import NewPlaylist from './NewPlaylist';
 import Main from './Main';
 import EditPlaylist from './EditPlaylist';

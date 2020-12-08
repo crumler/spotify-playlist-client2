@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
+import 'animate.css';
 import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
-import Footer from './Footer';
 import theme from '../../styles/MuiTheme';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox'
-import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -62,10 +55,6 @@ function generate(element) {
     );
 }
 
-// export default function InteractiveList() {
-//     const classes = useStyles();
-//     const [dense, setDense] = React.useState(false);
-//     const [secondary, setSecondary] = React.useState(false);
 
 class EditPlaylistDetails extends Component {
     constructor(props) {
@@ -75,6 +64,7 @@ class EditPlaylistDetails extends Component {
             artist: '',
             album: '',
             song: '',
+            playlistId: '',
             playlistName: '',
             description: '',
             playlistData: [],
@@ -82,9 +72,7 @@ class EditPlaylistDetails extends Component {
             open: false,
             secondary: false
         }
-        // this.displayExistingPlaylists = this.displayExistingPlaylists.bind(this);
-        // this.displayLivePlaylistData = this.displayLivePlaylistData.bind(this);
-        this.editModal = this.editModal.bind(this)
+
         this.handlePlaylistDelete = this.handlePlaylistDelete.bind(this)
         this.handlePlaylistEdit = this.handlePlaylistEdit.bind(this)
         this.handleClickOpen = this.handleClickOpen.bind(this)
@@ -95,10 +83,6 @@ class EditPlaylistDetails extends Component {
     handleSecondary = () => {
         this.setState({ secondary: true });
     };
-
-    // handleDense = () => {
-    //     this.setState({ dense: true });
-    // };
 
     componentDidMount() {
         fetch('http://localhost:5040/playlist/', {
@@ -121,7 +105,6 @@ class EditPlaylistDetails extends Component {
             .catch((err) => { console.log(err) })
     };
 
-
     handlePlaylistDelete(playlistDeleteId, userId) {
         console.log(playlistDeleteId)
         fetch(`http://localhost:5040/playlist/delete/${playlistDeleteId}`, {
@@ -139,13 +122,13 @@ class EditPlaylistDetails extends Component {
             })
         })
             .then(res => res.json())
+            .then(window.location.reload())
             .catch(err => console.log(err))
     };
 
-    handlePlaylistEdit(playlistUpdateId) {
-        playlistUpdateId.preventDefault();
+    handlePlaylistEdit() {
 
-        fetch(`http://localhost:5040/playlist/update/${playlistUpdateId}`, {
+        fetch(`http://localhost:5040/playlist/update/${this.state.playlistId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 playlist: {
@@ -161,68 +144,19 @@ class EditPlaylistDetails extends Component {
         }).then(
             (response) => response.json()
         ).then((allPlaylistsResponse) => {
-            console.log(this.state.open)
+
         });
     };
 
-    editModal(playlistId) {
-        return (
-            <div>
-                <form onSubmit={() => this.handlePlaylistEdit(playlistId)} noValidate autoComplete="off" style={{ marginTop: '2rem' }}>
-                    <TextField size="small" id="outlined-basic standard-size-small" label="Artist / Band" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ artist: e.target.value })} value={this.state.artist} />
-
-                    <TextField size="small" id="outlined-basic standard-size-small" label="Album" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ album: e.target.value })} value={this.state.album} />
-
-                    <TextField size="small" id="outlined-basic standard-size-small" label="Song" variant="filled" style={{ backgroundColor: 'white', color: 'white', borderRadius: '10px' }} onChange={(e) => this.setState({ song: e.target.value })} value={this.state.song} />
-                    <br />
-                    <Button variant="contained" color="primary" type="submit">Add Info to Playlist</Button>
-                </form>
-            </div>
-        )
-    };
-
-    handleClickOpen() {
-        this.setState = ({
-            open: true
-        })
+    handleClickOpen(playlistID) {
+        console.log(playlistID)
+        this.setState({ open: true, playlistId: playlistID })
     };
 
     handleClose() {
-        this.setState = ({
-            open: false
-        })
+        this.setState({ open: false })
+        window.location.reload()
     };
-
-
-    // displayExistingPlaylists() {
-    //     console.log(this.state.allPlaylists)
-    //     // setTimeout(() => {
-
-
-    //     // }, 3000)
-
-    // }
-
-
-    // displayLivePlaylistData() {
-
-    //     this.state.playlistData.map((musicData, index) => {
-    //         console.log(musicData);
-    //         return (
-
-    //             <li key={index}>
-    //                 Artist: {musicData.artist}
-    //                 <br />
-    //                 Album: {musicData.album}
-    //                 <br />
-    //                 Song: {musicData.song}
-    //             </li>
-
-    //         )
-    //     })
-    // };
-
-
 
     render() {
         const { classes } = this.props;
@@ -232,11 +166,9 @@ class EditPlaylistDetails extends Component {
                 <div style={{ width: '100%', marginTop: '80px' }}>
 
                     <h1>View / Edit Your Created Playlists:</h1>
-                    {/* <div >
-                        {this.displayExistingPlaylists()}
-                    </div> */}
+
                     <Grid container direction="column" alignContent="center" spacing={2} className={this.props.classes.root}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={6} className="animate__animated animate__zoomIn">
                             <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
                                 {this.state.allPlaylists.map((allPlaylistsCreated, index) => {
                                     console.log(this.state.allPlaylists)
@@ -272,15 +204,12 @@ class EditPlaylistDetails extends Component {
                                                 </List>
                                             </div>
                                         </Grid>
-
                                     )
                                 })}
-
                             </div>
                         </Grid>
-
                     </Grid>
-                    <form onSubmit={this.handlePlaylistEdit}>
+                    <form onSubmit={this.handlePlaylistEdit(this.playlistUpdateId)}>
                         <Dialog open={this.state.open === true} onClose={this.handleClose}>
                             <DialogTitle>Update Playlist Details:</DialogTitle>
                             <DialogContent>
@@ -307,10 +236,10 @@ class EditPlaylistDetails extends Component {
                                 />
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleClose} color='primary'>
+                                <Button onClick={this.handleClose} type="submit" color='primary'>
                                     Cancel
                                     </Button>
-                                <Button onClick={this.handlePlaylistEdit} color='primary'>
+                                <Button onClick={this.handleClose} type="submit" color='primary'>
                                     Update Playlist
                                     </Button>
                             </DialogActions>
