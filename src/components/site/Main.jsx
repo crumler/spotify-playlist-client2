@@ -54,8 +54,9 @@ class Main extends Component {
             <ThemeProvider theme={theme}>
                 <div style={{ width: '100%', marginTop: '100px' }}>
                     <Navbar />
+
                     <br />
-                    {/* <Router> */}
+
                     <Grid container spacing={1} justify="center" alignItems="center" className="animate__animated animate__zoomIn">
                         <Grid item xs={6} sm={3}>
                             <Link to="/newplaylist" style={{ textDecoration: 'none' }}>
@@ -76,15 +77,13 @@ class Main extends Component {
                                                 Click here to begin building a new playlist.
                                             </Typography>
                                         </CardContent>
-
                                     </CardActionArea>
                                     <CardActions>
                                     </CardActions>
                                 </Card>
                             </Link>
-
-
                         </Grid>
+
                         <Grid item xs={6} sm={3}>
                             <Link to="/editplaylist" style={{ textDecoration: 'none' }}>
                                 <Card className={this.props.classes.Card}>
@@ -109,9 +108,7 @@ class Main extends Component {
                                     </CardActions>
                                 </Card>
                             </Link>
-
                         </Grid>
-
                     </Grid>
                 </div>
             </ThemeProvider >

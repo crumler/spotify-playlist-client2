@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import theme from '../../styles/MuiTheme';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -44,6 +44,9 @@ const styles = theme => ({
         },
         title: {
             margin: theme.spacing(4, 0, 2)
+        },
+        selected: {
+            color: "white"
         }
     }
 });
@@ -71,7 +74,7 @@ class EditPlaylistDetails extends Component {
             playlistData: [],
             allPlaylists: [],
             open: false,
-            secondary: false
+            secondary: false,
         }
 
         this.handlePlaylistDelete = this.handlePlaylistDelete.bind(this)
@@ -87,7 +90,6 @@ class EditPlaylistDetails extends Component {
 
     componentDidMount() {
         fetch(`${APIURL}/playlist/`, {
-            // fetch('http://localhost:5040/playlist/', {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -109,7 +111,6 @@ class EditPlaylistDetails extends Component {
 
     handlePlaylistDelete(playlistDeleteId, userId) {
         fetch(`${APIURL}/playlist/delete/${playlistDeleteId}`, {
-            // fetch(`http://localhost:5040/playlist/delete/${playlistDeleteId}`, {
             method: 'DELETE',
             body: JSON.stringify({
                 playlist: {
@@ -130,7 +131,6 @@ class EditPlaylistDetails extends Component {
 
     handlePlaylistEdit() {
         fetch(`${APIURL}/playlist/update/${this.state.playlistId}`, {
-            // fetch(`http://localhost:5040/playlist/update/${this.state.playlistId}`, {
             method: 'PUT',
             body: JSON.stringify({
                 playlist: {
@@ -160,8 +160,17 @@ class EditPlaylistDetails extends Component {
         window.location.reload()
     };
 
+    handleViewOpen = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleViewClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+
     render() {
-        const { classes } = this.props;
+
         return (
 
             <ThemeProvider theme={theme}>

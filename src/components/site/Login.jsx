@@ -40,7 +40,6 @@ class Login extends React.Component {
     handleRegisterSubmit = (e) => {
         e.preventDefault();
         fetch(`${APIURL}/user/register`, {
-            // fetch('http://localhost:5040/user/register', {
             method: 'POST',
             body: JSON.stringify({ user: { firstName: this.state.firstName, lastName: this.state.lastName, username: this.state.username, password: this.state.password, favoriteArtist: this.state.favoriteArtist } }),
             headers: new Headers({
@@ -58,7 +57,6 @@ class Login extends React.Component {
     handleLoginSubmit = (event) => {
         event.preventDefault();
         fetch(`${APIURL}/user/login`, {
-            // fetch('http://localhost:5040/user/login', {
             method: 'POST',
             body: JSON.stringify({ user: { username: this.state.username, password: this.state.password } }),
             headers: new Headers({

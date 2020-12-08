@@ -8,6 +8,10 @@
   --animate-duration: 1s;
 }
 
+.liveList {
+  text-decoration: underline;
+}
+
 .animate__animated.animate__backInUp {
   --animate-duration: 1s;
 }

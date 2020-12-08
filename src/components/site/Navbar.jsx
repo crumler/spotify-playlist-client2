@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -47,7 +46,6 @@ class Navbar extends Component {
             setAnchorEl: null,
             open: false
         }
-
     };
 
     handleClick = event => {
@@ -58,15 +56,13 @@ class Navbar extends Component {
         this.setState({ anchorEl: null });
     };
 
-    /* {localStorage.getItem('token') !== null ? <Button color='primary' onClick={this.clickLogout}>Logout</Button> : null} */
+
     render() {
         const { anchorEl } = this.state;
-        // const {classes} = this.props;
         return (
 
             <ThemeProvider theme={theme}>
                 <div className={this.props.classes.root}>
-                    {/* <Router> */}
                     <AppBar position="fixed">
                         <Toolbar>
                             <IconButton edge="start" className={this.props.classes.menuButton} color="inherit" aria-label="menu" onClick={this.handleClick}>
@@ -104,13 +100,12 @@ class Navbar extends Component {
                                 <Link to="/editplaylist" style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <MenuItem onClick={this.handleClose}>Modify Playlists</MenuItem>
                                 </Link>
-
-
                             </Menu>
 
                             <Typography variant="h6" className={this.props.classes.title}>
                                 Spotify Playlist Creator
                             </Typography>
+
                             <Button className={this.props.classes.Button} color="secondary" backgroundColor="secondary" variant="contained" onClick={logout}>Logout</Button>
                         </Toolbar>
                     </AppBar>

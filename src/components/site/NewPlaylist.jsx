@@ -14,7 +14,7 @@ const styles = theme => ({
         flexGrow: 1,
         '& > *': {
             margin: theme.spacing(1),
-            width: '25ch',
+            width: '40ch',
         },
         control: {
             padding: theme.spacing(2)
@@ -45,7 +45,6 @@ class NewPlaylist extends Component {
 
     handlePlaylistSubmit = (e) => {
         e.preventDefault();
-        // fetch('http://localhost:5040/playlist/create', {
         fetch(`${APIURL}/playlist/create`, {
             method: 'POST',
             body: JSON.stringify({
@@ -77,12 +76,14 @@ class NewPlaylist extends Component {
         })
     };
 
+
     disabledFalse() {
         this.setState({
             ...this.state,
             playlistNameFieldDisabled: false
         })
     };
+
 
     render() {
         return (
