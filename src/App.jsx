@@ -25,7 +25,6 @@ class App extends React.Component {
   componentWillMount() {
     if (localStorage.getItem('token')) {
       let token = localStorage.getItem('token')
-      console.log(token)
       if (token) {
 
         this.setState({

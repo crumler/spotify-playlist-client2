@@ -21,10 +21,7 @@ class AddPlaylistDetails extends Component {
 
     handleSongSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state);
-        console.log(this.props.playlistIdProp);
         fetch(`${APIURL}/playlistsong/create`, {
-            // fetch('http://localhost:5040/playlistsong/create', {
             method: 'POST',
             body: JSON.stringify({
                 playlistsong: {
@@ -51,7 +48,6 @@ class AddPlaylistDetails extends Component {
 
     displayLivePlaylistData() {
 
-        console.log(this.state.playlistData);
         return this.state.playlistData.map((song) => {
             return (
 

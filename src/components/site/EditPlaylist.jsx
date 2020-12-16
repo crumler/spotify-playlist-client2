@@ -22,13 +22,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import QueueIcon from '@material-ui/icons/Queue';
+import EditPlaylistMusic from './EditPlaylistMusic';
+
 
 const styles = theme => ({
     root: {
         flexGrow: 1,
         '& > *': {
             margin: theme.spacing(1),
-            width: '100ch',
+            width: '100em',
             maxWidth: 752
         },
         control: {
@@ -48,7 +51,19 @@ const styles = theme => ({
         selected: {
             color: "white"
         }
+    },
+    typography: {
+        padding: theme.spacing(2),
+    },
+    paper: {
+        position: 'absolute',
+        width: 400,
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     }
+
 });
 
 function generate(element) {
@@ -57,7 +72,7 @@ function generate(element) {
             key: value
         }),
     );
-}
+};
 
 
 class EditPlaylistDetails extends Component {
@@ -73,8 +88,9 @@ class EditPlaylistDetails extends Component {
             description: '',
             playlistData: [],
             allPlaylists: [],
+            playlistSongData: [],
             open: false,
-            secondary: false,
+            secondary: false
         }
 
         this.handlePlaylistDelete = this.handlePlaylistDelete.bind(this)
@@ -97,7 +113,6 @@ class EditPlaylistDetails extends Component {
             })
         }).then((response) => response.json())
             .then((res) => {
-                console.log(res);
                 return res;
             }).then((res) => {
                 this.setState({
@@ -145,19 +160,24 @@ class EditPlaylistDetails extends Component {
             })
         }).then(
             (response) => response.json()
-        ).then((allPlaylistsResponse) => {
-
-        });
+        );
     };
 
     handleClickOpen(playlistID) {
-        console.log(playlistID)
         this.setState({ open: true, playlistId: playlistID })
     };
 
     handleClose() {
         this.setState({ open: false })
         window.location.reload()
+    };
+
+    handlePopoverClick(event) {
+        this.setState({ anchorEl: event.currentTarget })
+    };
+
+    handlePopoverClose() {
+        this.setState({ anchorEl: null })
     };
 
     handleViewOpen = event => {
@@ -168,9 +188,45 @@ class EditPlaylistDetails extends Component {
         this.setState({ anchorEl: null });
     };
 
+    openPlaylistSongs() {
+
+        fetch(`${APIURL}/playlistsong/`, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.props.sessionToken
+            })
+        }).then((response) => response.json())
+            .then((res) => {
+                return res;
+            }).then((res) => {
+                this.setState({
+                    playlistSongData: res
+                })
+
+            })
+            .catch((err) => { console.log(err) })
+
+
+        return this.state.playlistSongData.map((song) => {
+            return (
+                <Grid item xs={12}>
+                    <li className="animate__animated animate__zoomIn" key={song.artist}>
+                        <p className="liveList">Artist:</p> {song.artist}
+                        <br />
+                        <p className="liveList">Album:</p> {song.album}
+                        <br />
+                        <p className="liveList">Song:</p> {song.song}
+                        <br />
+                    </li>
+                </Grid>
+            )
+        })
+    };
+
 
     render() {
-
+        const { classes } = this.props;
         return (
 
             <ThemeProvider theme={theme}>
@@ -182,8 +238,6 @@ class EditPlaylistDetails extends Component {
                         <Grid item xs={12} md={6} className="animate__animated animate__zoomIn">
                             <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
                                 {this.state.allPlaylists.map((allPlaylistsCreated, index) => {
-                                    console.log(this.state.allPlaylists)
-                                    console.log(allPlaylistsCreated)
                                     const { classes } = this.props;
                                     return (
                                         <Grid key={index} item xs={12} md={6} style={{ maxHeight: '100px', overflow: 'auto', textAlign: "center" }}>
@@ -204,6 +258,9 @@ class EditPlaylistDetails extends Component {
                                                             />
                                                             <ListItemSecondaryAction>
                                                                 <IconButton edge="start" aria-label="edit">
+                                                                    <QueueIcon key={index} style={{ color: "#1DB954" }} onClick={this.openPlaylistSongs()} />
+                                                                </IconButton>
+                                                                <IconButton aria-label="edit">
                                                                     <EditIcon key={index} style={{ color: "#1DB954" }} onClick={() => this.handleClickOpen(allPlaylistsCreated.id)} />
                                                                 </IconButton>
                                                                 <IconButton edge="end" aria-label="delete">
@@ -260,6 +317,8 @@ class EditPlaylistDetails extends Component {
             </ThemeProvider >
         )
     }
-}
+};
+
+const EditPlaylistMusicWrapped = withStyles(styles)(EditPlaylistMusic);
 
 export default withStyles(styles, { withTheme: true })(EditPlaylistDetails);
