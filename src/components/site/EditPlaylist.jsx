@@ -247,7 +247,7 @@ class EditPlaylistDetails extends Component {
                                                         <ListItem>
                                                             <ListItemAvatar>
                                                                 <Avatar>
-                                                                    <QueueMusicIcon key={index} style={{ color: "#191414" }} />
+                                                                    <QueueMusicIcon key={index} style={{ color: "#191414", backgroundColor: "#1DB954" }} />
                                                                 </Avatar>
                                                             </ListItemAvatar>
                                                             <ListItemText

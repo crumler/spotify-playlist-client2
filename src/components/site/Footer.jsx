@@ -11,7 +11,7 @@ class Footer extends React.Component {
         return (
             <Grid InUpcontainer justify='center' style={{ backgroundColor: '#191414' }}>
                 <Grid item className="animate__animated animate__back">
-                    <p>&#169; 2020 - Chris Rumler</p>
+                    <p>&#169; {(new Date().getFullYear())} - Chris Rumler</p>
                 </Grid>
             </Grid>
         )
