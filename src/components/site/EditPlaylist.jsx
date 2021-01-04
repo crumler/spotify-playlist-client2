@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'animate.css';
 import APIURL from '../../helpers/environment';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -24,10 +24,24 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import QueueIcon from '@material-ui/icons/Queue';
 import EditPlaylistMusic from './EditPlaylistMusic';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
+// import Paper from '@material-ui/core/Paper';
+
 
 
 const styles = theme => ({
+    table: {
+        minWidth: 650,
+      },
     root: {
+        selected: {
+            color: "red"
+        },
         flexGrow: 1,
         '& > *': {
             margin: theme.spacing(1),
@@ -53,7 +67,7 @@ const styles = theme => ({
         }
     },
     typography: {
-        padding: theme.spacing(2),
+        // padding: theme.spacing(5),
     },
     paper: {
         position: 'absolute',
@@ -65,6 +79,26 @@ const styles = theme => ({
     }
 
 });
+
+// Using MUI Table to map out existing playlist info
+
+// function createData(artist, song, album) {
+//     return { artist, song, album };
+//   };
+
+// const rows = [
+
+// ];
+
+const primaryText = {
+    color: "#1DB954",
+    fontSize: "18px"
+};
+
+const secondaryText = {
+    color: "white",
+    fontSize: "12px"
+};
 
 function generate(element) {
     return [0].map((value) =>
@@ -220,6 +254,7 @@ class EditPlaylistDetails extends Component {
                         <br />
                     </li>
                 </Grid>
+                
             )
         })
     };
@@ -251,10 +286,12 @@ class EditPlaylistDetails extends Component {
                                                                 </Avatar>
                                                             </ListItemAvatar>
                                                             <ListItemText
+                                                                primaryTypographyProps={{style: primaryText}}
+                                                                secondaryTypographyProps={{ style: secondaryText}}
                                                                 key={index}
+                                                                classes={{text: classes.selected}}
                                                                 primary={allPlaylistsCreated.playlistName}
                                                                 secondary={allPlaylistsCreated.description}
-                                                                style={{ color: "white" }}
                                                             />
                                                             <ListItemSecondaryAction>
                                                                 <IconButton edge="start" aria-label="edit">
