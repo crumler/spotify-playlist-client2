@@ -15,7 +15,6 @@ class Routes extends Component {
                     <Route exact path="/editplaylist"><EditPlaylist /></Route>
                 </Switch>
             </Router>
-
         )
     }
 };

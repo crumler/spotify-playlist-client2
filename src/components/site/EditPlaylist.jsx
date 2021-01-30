@@ -254,7 +254,6 @@ class EditPlaylistDetails extends Component {
                         <br />
                     </li>
                 </Grid>
-                
             )
         })
     };

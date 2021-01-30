@@ -2,36 +2,27 @@
 
 * {
   font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.animate__animated.animate__zoomIn {
-  --animate-duration: 1s;
-}
+.animate__animated.animate__zoomIn {--animate-duration: 1s;}
 
-.liveList {
-  text-decoration: underline;
-}
+.liveList {text-decoration: underline;}
 
-.animate__animated.animate__backInUp {
-  --animate-duration: 1s;
-}
+.animate__animated.animate__backInUp {--animate-duration: 1s;}
 
 ol {
   max-height: 24rem;
   overflow: auto;
 }
 
-.MuiDataGrid-root {
-  color: white
-}
+.MuiDataGrid-root {color: white}
 
-.App {
-  text-align: center;
-}
+.App {text-align: center;}
 
-#playlistGrid {
-  color: white !important;
-}
+#playlistGrid {color: white !important;}
 
 .App-logo {
   height: 40vmin;
@@ -55,9 +46,7 @@ ol {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
+.App-link {color: #61dafb;}
 
 @keyframes App-logo-spin {
   from {
