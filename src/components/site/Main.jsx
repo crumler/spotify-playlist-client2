@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'animate.css';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -38,7 +38,6 @@ const styles = theme => ({
     }
 });
 
-
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -48,6 +47,7 @@ class Main extends Component {
         }
     }
 
+    
     render() {
 
         return (

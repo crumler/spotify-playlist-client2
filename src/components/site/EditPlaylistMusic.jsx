@@ -125,7 +125,6 @@ class EditPlaylistMusic extends Component {
     };
 
     render() {
-        const { classes } = this.props;
 
         return (
             <ThemeProvider theme={theme}>
@@ -134,7 +133,7 @@ class EditPlaylistMusic extends Component {
                         <Grid item xs={12} md={6} className="animate__animated animate__zoomIn">
                             <div style={{ textAlign: "-webkit-center", maxHeight: 400, overflow: 'auto' }}>
                                 {this.state.allSongs.map((allPlaylistSongs, index) => {
-                                    const { classes } = this.props;
+                                    
                                     return (
                                         <Grid key={index} item xs={12} md={6}
                                             style={{ maxHeight: "100px", overflow: "auto", textAlign: "center" }}>

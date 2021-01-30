@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import 'animate.css';
 import APIURL from '../../helpers/environment';
-import { ThemeProvider } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
